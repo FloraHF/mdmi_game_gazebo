@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- game settings-->
+  <arg name="r" value="0.5"/>
+  <arg name="ni" value="3"/>
+  <arg name="nd" value="2"/>
+
+  <!-- data saving-->
+  <arg name="user_account" default="flora" />
+  <arg name="csvFilesStoring" default="true" />
+  <arg name="csvFilesStoringTime" default="0.1" />
+
+  <!-- model files -->
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+
+  <!-- gazebo world -->  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find rotors_gazebo)/worlds/basic_crazyflie.world" />
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- ############# launch individual players: intruder I0 ###########-->  
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    <!-- player settings, change here-->
+    <arg name="role" value="I"/>
+    <arg name="id" value="0"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="x" value="1.0"  />
+    <arg name="y" value="1.0"  />
+    <!-- environment settings and data saving, same for all players-->
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>
+
+  <!-- ############# launch individual players: intruder I1 ###########-->  
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    <!-- player settings, change here-->
+    <arg name="role" value="I"/>
+    <arg name="id" value="1"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="x" value="1.0"  />
+    <arg name="y" value="2.0"  />
+    <!-- environment settings and data saving, same for all players-->
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>
+
+  <!-- ############# launch individual players: intruder I1 ###########-->  
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    <!-- player settings, change here-->
+    <arg name="role" value="I"/>
+    <arg name="id" value="2"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="x" value="1.0"  />
+    <arg name="y" value="3.0"  />
+    <!-- environment settings and data saving, same for all players-->
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>
+
+  <!-- ############# launch individual players: intruder I1 ###########-->  
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    <!-- player settings, change here-->
+    <arg name="role" value="D"/>
+    <arg name="id" value="0"/>
+    <arg name="node_file" value="Defender.py"/>
+    <arg name="x" value="2.0"  />
+    <arg name="y" value="1.0"  />
+    <!-- environment settings and data saving, same for all players-->
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>
+
+  <!-- ############# launch individual players: intruder I1 ###########-->  
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    <!-- player settings, change here-->
+    <arg name="role" value="D"/>
+    <arg name="id" value="1"/>
+    <arg name="node_file" value="Defender.py"/>
+    <arg name="x" value="2.0"  />
+    <arg name="y" value="2.0"  />
+    <!-- environment settings and data saving, same for all players-->
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>
+
+  <!-- environment -->
+  <node name="environment" pkg="mdmi_game" type="env.py" output="screen">
+    <param name="ni" value="$(arg ni)"  />
+    <param name="nd" value="$(arg nd)"  />  
+  </node>   
+
+</launch>

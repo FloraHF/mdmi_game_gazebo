@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="user_account" default="flora" />
+  <arg name="csvFilesStoring" default="true" />
+  <arg name="csvFilesStoringTime" default=".1" />
+  <!-- ########################## group for player: I0 ############################### -->
+  <group ns="crazyflie2_I0">
+    <!-- controller node -->
+    <node name="heading_altitude_controller_node" pkg="rotors_control" type="heading_altitude_controller_node" output="screen">
+      <param name="user_account" value="flora"  />
+      <param name="playerID" value="I0"  />
+      <param name="csvFilesStoring" value="true"  />
+      <param name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+    </node>    
+  </group>
+</launch>

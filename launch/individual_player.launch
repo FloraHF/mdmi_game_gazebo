@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- environment settings -->
+  <arg name="mav_name" default="crazyflie2"/>
+  <arg name="r" default="0.5"/>
+  <arg name="ni" default="$(arg ni)"  />
+  <arg name="nd" default="$(arg nd)"  />   
+
+  <!-- player settings -->
+  <arg name="role" default="I"/>
+  <arg name="node_file" default="Intruder.py"/>
+  <arg name="id" default="0"/>
+  <arg name="x" default="0.0"  />
+  <arg name="y" default="0.0"  />
+
+  <!-- CrazyS package required settings -->
+  <arg name="world_name" default="basic"/>
+  <arg name="enable_logging" default="false" />
+  <arg name="enable_ground_truth" default="true" />
+  <arg name="enable_state_estimator" default="true"/>
+  <arg name="enable_mellinger_controller" default="false"/>  
+  <arg name="enable_internal_model_controller" default="false"/>
+
+  <!-- data saving settings -->
+  <arg name="user_account" default="flora" />
+  <arg name="csvFilesStoring" default="true" />
+  <arg name="csvFilesStoringTime" default="0.1" />
+  
+  <!-- ########################## group for player: I0 ############################### -->
+  <group ns="crazyflie2_$(arg role)$(arg id)">
+
+   <!-- player node -->
+    <node name="player" pkg="mdmi_game" type="$(arg node_file)" output="screen">
+      <param name="id" value="$(arg id)"  />
+      <param name="r" value="$(arg r)"  />
+      <param name="x" value="$(arg x)"  />
+      <param name="y" value="$(arg y)"  />
+      <param name="ni" value="$(arg ni)"  />
+      <param name="nd" value="$(arg nd)"  />      
+    </node>
+
+    <!-- crazyflie model -->
+    <include file="$(find rotors_gazebo)/launch/spawn_mav_crazyflie.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_$(arg role)$(arg id)" />
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <arg name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)" />
+      <arg name="log_file" value="$(arg mav_name)_$(arg role)$(arg id)"/>
+      <!-- Set the initial position -->
+      <arg name="x" value="$(arg x)"/>
+      <arg name="y" value="$(arg y)"/>
+    </include>
+
+    <!-- controller node -->
+    <node name="heading_altitude_controller_node" pkg="rotors_control" type="heading_altitude_controller_node" output="screen">
+      <param name="user_account" value="$(arg user_account)"  />
+      <param name="playerID" value="$(arg role)$(arg id)"  />
+      <param name="csvFilesStoring" value="$(arg csvFilesStoring)"  />
+      <param name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+      <!-- <param name="csvFilesStoringTime" value=".1" /> -->
+    </node>    
+
+  </group>
+
+</launch>

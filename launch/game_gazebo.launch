@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Enables the Internal Model Controller disabling the Mellinger and the Position ones -->
+  <arg name="r" default="0.2"/>
+  <arg name="ni" default="1" />
+  <arg name="nd" default="2" />
+
+  <arg name="user_account" default="flora" />
+  <arg name="csvFilesStoring" default="true" />
+  <arg name="csvFilesStoringTime" default=".1" />
+  
+
+  <arg name="enable_internal_model_controller" default="false"/>
+  <arg name="world_name" default="basic"/>
+  <arg name="enable_logging" default="false"/>
+  <arg name="enable_ground_truth" default="true"/>
+  <arg name="mav_name" default="crazyflie2" />
+  <arg name="enable_state_estimator" default="true"/>
+  <arg name="enable_mellinger_controller" default="false"/>
+
+  <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find rotors_gazebo)/models"/>
+  <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:$(find rotors_gazebo)/models"/>
+
+  <!-- gazebo world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find rotors_gazebo)/worlds/$(arg world_name)_crazyflie.world"/>
+    <!-- <arg name="debug" value="true"/> -->
+    <arg name="paused" value="false"/>
+    <!-- <arg name="gui" value="false"/> -->
+  </include>
+
+  <!-- ########################## group for player: I0 ############################### -->
+  <group ns="crazyflie2_I0">
+
+   <!-- player node -->
+    <node name="test_player" pkg="mdmi_game" type="TestPlayer.py" output="screen">
+      <param name="id" value="I0"  />
+      <param name="x" value="1.0"  />
+      <param name="y" value="2.0"  />    
+    </node>
+
+    <!-- crazyflie model -->
+    <include file="$(find rotors_gazebo)/launch/spawn_mav_crazyflie.launch">
+      <arg name="mav_name" value="$(arg mav_name)" />
+      <arg name="namespace" value="$(arg mav_name)_I0" />
+      <arg name="model" value="$(find rotors_description)/urdf/mav_generic_odometry_sensor.gazebo" />
+      <arg name="enable_logging" value="$(arg enable_logging)" />
+      <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
+      <!-- As for the Mellinger and Position controllers in the "crazyflie2_hovering_example.launch" file -->
+      <arg name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)" />
+      <arg name="log_file" value="$(arg mav_name)_I0"/>
+      <!-- Set the initial position -->
+      <arg name="x" value="0.0"/>
+      <arg name="y" value="0.0"/>
+    </include>
+
+    <node name="heading_altitude_controller_node" pkg="rotors_control" type="heading_altitude_controller_node" output="screen">
+      <param name="user_account" value="flora"  />
+      <param name="playerID" value="I0"  />
+      <param name="csvFilesStoring" value="true"  />
+      <param name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+    </node>   
+
+  </group>
+
+</launch>
