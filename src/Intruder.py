@@ -11,6 +11,12 @@ class IntruderNode(PlayerNode):
 	"""docstring for Intruder"""
 	def __init__(self, *arg, **kwarg):
 		super(IntruderNode, self).__init__(*arg, **kwarg)
+
+		# log: the defender capturing, and the time entering the target
+		with open(self.datadir+'/Dcap.csv', 'w') as f:
+			f.write('t,d\n')
+		with open(self.datadir+'/Tent.csv', 'w') as f:
+			f.write('t,enter\n')		
 	
 	def get_team(self):
 		return ['I'+str(i) for i in range(self.ni) if i != self.id]
@@ -20,10 +26,13 @@ class IntruderNode(PlayerNode):
 
 	def capture_handler(self):
 		for d in range(self.nd):
-			if self.is_capture('D'+str(d)):
+			D = 'D'+str(d)
+			if self.is_capture(D):
 				self.status[1] = 'captured'
 				self.status[0] = 'land'
 				rospy.loginfo(str(self)+' reports: captured')
+				with open(self.datadir+'/Dcap.csv', 'w') as f:
+					f.write('%.4f,%s\n'%(self.t, D))
 				break
 
 	def entering_handler(self):
@@ -31,6 +40,8 @@ class IntruderNode(PlayerNode):
 			self.status[1] = 'entered'
 			self.status[0] = 'standby'
 			rospy.loginfo(str(self)+' reports: entered the target')
+			with open(self.datadir+'/Tent.csv', 'w') as f:
+				f.write('%.4f,%d\n'%(self.t, 1))	
 
 	def strategy(self):
 
@@ -71,15 +82,21 @@ class IntruderNode(PlayerNode):
 if __name__ == '__main__':
 
 	rospy.init_node('intruder', anonymous=True)
+	resid = rospy.get_param("~res_id", 0)
 	i = rospy.get_param("~id", 0)
+	vmax = rospy.get_param("~vmax", .3)
 	x = rospy.get_param("~x", 0)
 	y = rospy.get_param("~y", 0)
 	r = rospy.get_param("~r", .1)
 	nd = rospy.get_param("~nd", 2)
 	ni = rospy.get_param("~ni", 1)
+	Ro = rospy.get_param("~Ro", 2.)
+	Rt = rospy.get_param("~Rt", 5.)
 		
-	intruder = IntruderNode(i, np.array([x, y]), 
-							r=r, nd=nd, ni=ni)
+	intruder = IntruderNode(i, np.array([x, y]), vmax,
+							r=r, nd=nd, ni=ni,
+							Rteam=Rt, Roppo=Ro,
+							resid=resid)
 
 	rospy.Timer(rospy.Duration(.1), intruder.iteration)
 

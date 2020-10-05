@@ -13,7 +13,8 @@ def dist(x, y):
 # ===== game definitions
 class PlayerState(object):
  	"""docstring for PlayerState"""
- 	def __init__(self, x, z, v=np.zeros(2)):
+ 	def __init__(self, t, x, z, v=np.zeros(2)):
+ 		self.t = t
  		self.x = np.array([xx for xx in x])
  		self.v = np.array([vv for vv in v])
  		self.z = z
@@ -25,6 +26,7 @@ class PlayerState(object):
 
 # ===== message conversions
 def odometry_msg_to_player_state(msg):
+	t = msg.header.stamp.secs + msg.header.stamp.nsecs/1e9
 	x = msg.pose.pose.position
 	v = msg.twist.twist.linear
 	z = x.z
@@ -33,7 +35,7 @@ def odometry_msg_to_player_state(msg):
 	# a = msg.linear_acceleration[:2]
 	# pqr = msg.angular_velocity
 	# dpqr = msg.angular_acceleration
-	return PlayerState(x, z, v)
+	return PlayerState(t, x, z, v)
 
 def create_multi_dof_joint_trajectory_msg(npts):
 	trajectory_msg = MultiDOFJointTrajectory()

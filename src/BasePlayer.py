@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
+import os
+import shutil
+
 import numpy as np
+import pandas as pd
 import rospy
 
-# from mav_msgs.msg import DroneState
+# messages
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
 from trajectory_msgs.msg import MultiDOFJointTrajectory
-# from geometry_msgs.msg import Transform, Twist
 
+# services
 from mdmi_game.srv import DroneStatus, DroneStatusResponse
 
+# for the game
 from Geometries import CircleTarget
 from utils import norm, dist, PlayerState
 from utils import odometry_msg_to_player_state, create_multi_dof_joint_trajectory_msg
@@ -18,11 +23,12 @@ from utils import odometry_msg_to_player_state, create_multi_dof_joint_trajector
 
 class PlayerNode(object):
 
-	def __init__(self, i, x, ni=1, nd=2, r=1., Rtarg=1.25, Rteam=5., Roppo=5.):
+	def __init__(self, i, x, vmax, ni=1, nd=2, r=1., Rtarg=1.25, Rteam=5., Roppo=5., resid=0):
 		# environment settings
 		self.target = CircleTarget(Rtarg)
 		self.ni = ni
 		self.nd = nd
+		self.t = 0.
 
 		# player settings
 		self.altitude = 1.
@@ -33,7 +39,8 @@ class PlayerNode(object):
 
 		self.status = ['standby', '']
 		self.x0 = x
-		self.state = PlayerState(self.x0, self.altitude)
+		self.vmax = vmax
+		self.state = PlayerState(self.t, self.x0, self.altitude)
 
 		# id of all the players
 		self.team_all = self.get_team()
@@ -56,6 +63,38 @@ class PlayerNode(object):
 
 		# service
 		rospy.Service('/crazyflie2_'+str(self)+'/set_status', DroneStatus, self.status_srv_callback)
+
+		# create files for data saving, clear existing files if exist
+		self.datadir = '/home/flora/mdmi_data/'+str(resid)+'/'+str(self)
+		if os.path.exists(self.datadir): 
+			shutil.rmtree(self.datadir)
+		os.makedirs(self.datadir)
+
+		# record parameters used by the player
+		with open(self.datadir + '/param.csv', 'w') as f:
+			
+			# title
+			f.write('param,value\n')
+
+			# target info
+			f.write('target:type,%s\n'%str(self.target)) 
+			f.write('target:x0,%.2f\n'%self.target.x0)
+			f.write('target:y0,%.2f\n'%self.target.y0)
+			if 'circle' in str(self.target):
+				f.write('target:R,%.2f\n'%self.target.size)
+
+			f.write('nd,%d\n'%self.nd)
+			f.write('ni,%d\n'%self.ni)
+			
+			# player info
+			f.write('id,%s\n'%str(self))
+			f.write('r,%.2f\n'%self.r)
+			f.write('vmax,%.2f\n'%self.vmax) 
+			f.write('x0,%.2f\n'%self.x0[0])
+			f.write('y0,%.2f\n'%self.x0[1])
+			f.write('z,%.2f\n'%self.altitude)
+			f.write('Rteam,%.2f\n'%self.Rt)
+			f.write('Roppo,%.2f\n'%self.Ro)
 
 	# ============ functions for the game ============
 	def get_team(self):
@@ -124,11 +163,11 @@ class PlayerNode(object):
 	# ============ subscriber callbacks ============
 	def selfsub_callback(self, msg):
 		state = odometry_msg_to_player_state(msg)
+		self.t = state.t
 		self.state.x = state.x
 		self.state.v = state.v
 
 	def get_statesub_callback(self, p, pset, R):
-
 		def sub_callback(msg):
 			state = odometry_msg_to_player_state(msg)
 			if dist(state.x, self.state.x) <= R and state.z > 0.5:

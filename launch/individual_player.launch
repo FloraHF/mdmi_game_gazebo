@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <launch>
+
   <!-- environment settings -->
   <arg name="mav_name" default="crazyflie2"/>
   <arg name="r" default="0.5"/>
@@ -7,9 +8,14 @@
   <arg name="nd" default="$(arg nd)"  />   
 
   <!-- player settings -->
+  <!-- <arg name="param_file" default="$(find mdmi_game)/param/defender.yaml"/>    -->
+  <!-- <rosparam command="load" file="$(arg param_file)"/> -->
   <arg name="role" default="I"/>
   <arg name="node_file" default="Intruder.py"/>
   <arg name="id" default="0"/>
+  <arg name="vmax" default="0.5" />
+  <arg name="Rt" default="5." />
+  <arg name="Ro" default="5." />
   <arg name="x" default="0.0"  />
   <arg name="y" default="0.0"  />
 
@@ -22,6 +28,7 @@
   <arg name="enable_internal_model_controller" default="false"/>
 
   <!-- data saving settings -->
+  <arg name="res_id" default="0"/>
   <arg name="user_account" default="flora" />
   <arg name="csvFilesStoring" default="true" />
   <arg name="csvFilesStoringTime" default="0.1" />
@@ -31,12 +38,16 @@
 
    <!-- player node -->
     <node name="player" pkg="mdmi_game" type="$(arg node_file)" output="screen">
+      <param name="res_id" value="$(arg res_id)"  />
       <param name="id" value="$(arg id)"  />
+      <param name="ni" value="$(arg ni)"  />
+      <param name="nd" value="$(arg nd)"  />       
       <param name="r" value="$(arg r)"  />
+      <param name="vmax" value="$(arg vmax)" />
       <param name="x" value="$(arg x)"  />
       <param name="y" value="$(arg y)"  />
-      <param name="ni" value="$(arg ni)"  />
-      <param name="nd" value="$(arg nd)"  />      
+      <param name="Rt" value="$(arg Rt)" />
+      <param name="Ro" value="$(arg Ro)" />    
     </node>
 
     <!-- crazyflie model -->
@@ -57,6 +68,7 @@
     <node name="heading_altitude_controller_node" pkg="rotors_control" type="heading_altitude_controller_node" output="screen">
       <param name="user_account" value="$(arg user_account)"  />
       <param name="playerID" value="$(arg role)$(arg id)"  />
+      <param name="resID" value="$(arg role)$(arg res_id)"  />
       <param name="csvFilesStoring" value="$(arg csvFilesStoring)"  />
       <param name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
       <!-- <param name="csvFilesStoringTime" value=".1" /> -->
