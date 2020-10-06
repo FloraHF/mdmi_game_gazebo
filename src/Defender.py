@@ -75,14 +75,14 @@ class DefenderNode(PlayerNode):
 		if icurr not in self.state_oppo_neigh:
 			return np.array([0, 0]) # TODO: return to x0
 
-		with open(self.datadir+'/Itarg.csv', 'a') as f:
-			f.write('%.4f,%s,%.4f,%s\n'%(self.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
-
 		istate = self.state_oppo_neigh[icurr]
 
 		dr = DominantRegion(self.r, .5/.3, istate.x, [self.state.x], offset=0)
 		xw = self.target.deepest_point_in_dr(dr)
 		dx = xw - self.state.x
+
+		with open(self.datadir+'/Itarg.csv', 'a') as f:
+			f.write('%.4f,%s,%.4f,%s\n'%(self.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
 
 		return self.vmax*dx/norm(dx)
 
@@ -97,13 +97,17 @@ class DefenderNode(PlayerNode):
 		pin = 0 if cand_sort.size <= self.ub else int(-self.ub)
 		pref = [n.value[0] for n in cand_sort.nodeat(pin).iternext()] if cand_sort.size > 0 else []
 
-		nremoved = 0
+		_n = len(pref)
 		for i in pref[::-1]:
+			# print(str(self), 'before check neigbour', i, pref)
 			for d, state in self.state_team_neigh.items():
 				if i in state.pref and cand_dict[i] < state.pref[i]:
+					# print(str(self), 'before check neigbour', i, pref)
 					pref.remove(i)
-					nremoved += 1
-		for k in range(nremoved):
+					break;
+					# nremoved += 1
+		n_ = len(pref)
+		for k in range(_n - n_):
 			if cand_sort.nodeat(pin).prev is None:
 				break
 			pref = [cand_sort.nodeat(pin).prev.value[0]] + pref
@@ -142,7 +146,7 @@ class DefenderNode(PlayerNode):
 if __name__ == '__main__':
 
 	rospy.init_node('defender', anonymous=True)
-	resid = rospy.get_param("~res_id", 0)
+	resid = rospy.get_param("~res_id", 'res0')
 	i = rospy.get_param("~id", 0)
 	vmax = rospy.get_param("~vmax", .5)
 	x = rospy.get_param("~x", 0)

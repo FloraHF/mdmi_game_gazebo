@@ -24,6 +24,17 @@ class PlayerState(object):
  		# self.dpqr = dpqr
  		self.pref = dict()
 
+ 	def update_xzv(self, t=None, x=None, z=None, v=None):
+ 		if t is not None:
+ 			self.t = t
+ 		if x is not None:
+ 			self.x = x
+ 		if z is not None:
+ 			self.z = z
+ 		if v is not None:
+ 			self.v = v
+ 		self.speed = norm(v)
+
 # ===== message conversions
 def odometry_msg_to_player_state(msg):
 	t = msg.header.stamp.secs + msg.header.stamp.nsecs/1e9

@@ -38,7 +38,7 @@
 
    <!-- player node -->
     <node name="player" pkg="mdmi_game" type="$(arg node_file)" output="screen">
-      <param name="res_id" value="$(arg res_id)"  />
+      <param name="res_id" value="res$(arg res_id)"  />
       <param name="id" value="$(arg id)"  />
       <param name="ni" value="$(arg ni)"  />
       <param name="nd" value="$(arg nd)"  />       
@@ -68,7 +68,7 @@
     <node name="heading_altitude_controller_node" pkg="rotors_control" type="heading_altitude_controller_node" output="screen">
       <param name="user_account" value="$(arg user_account)"  />
       <param name="playerID" value="$(arg role)$(arg id)"  />
-      <param name="resID" value="$(arg role)$(arg res_id)"  />
+      <param name="resID" value="res$(arg res_id)"  />
       <param name="csvFilesStoring" value="$(arg csvFilesStoring)"  />
       <param name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
       <!-- <param name="csvFilesStoringTime" value=".1" /> -->

@@ -23,7 +23,7 @@ from utils import odometry_msg_to_player_state, create_multi_dof_joint_trajector
 
 class PlayerNode(object):
 
-	def __init__(self, i, x, vmax, ni=1, nd=2, r=1., Rtarg=1.25, Rteam=5., Roppo=5., resid=0):
+	def __init__(self, i, x, vmax, ni=1, nd=2, r=1., Rtarg=1.25, Rteam=5., Roppo=5., resid='res0'):
 		# environment settings
 		self.target = CircleTarget(Rtarg)
 		self.ni = ni
@@ -65,7 +65,7 @@ class PlayerNode(object):
 		rospy.Service('/crazyflie2_'+str(self)+'/set_status', DroneStatus, self.status_srv_callback)
 
 		# create files for data saving, clear existing files if exist
-		self.datadir = '/home/flora/mdmi_data/'+str(resid)+'/'+str(self)
+		self.datadir = '/home/flora/mdmi_data/'+resid+'/'+str(self)
 		if os.path.exists(self.datadir): 
 			shutil.rmtree(self.datadir)
 		os.makedirs(self.datadir)
@@ -113,6 +113,8 @@ class PlayerNode(object):
 		raise NotImplementedError
 
 	def is_capture(self, oppo):
+		if oppo not in self.state_oppo_neigh:
+			return False
 		return dist(self.state.x, self.state_oppo_neigh[oppo].x) < self.r
 
 	# ============ actions for different status ============
@@ -163,22 +165,15 @@ class PlayerNode(object):
 	# ============ subscriber callbacks ============
 	def selfsub_callback(self, msg):
 		state = odometry_msg_to_player_state(msg)
-		self.t = state.t
-		self.state.x = state.x
-		self.state.v = state.v
+		self.state.update_xzv(t=state.t, x=state.x, z=state.z, v=state.v)
 
 	def get_statesub_callback(self, p, pset, R):
 		def sub_callback(msg):
 			state = odometry_msg_to_player_state(msg)
 			if dist(state.x, self.state.x) <= R and state.z > 0.5:
-				if p in pset:
-					pset[p].x = state.x
-					pset[p].v = state.v
-				else:
-					pset.update({p: state})
+				pset.update({p: state})
 			else:
 				pset.pop(p, '')
-			# print(pset)
 		return sub_callback	
 
 	# ============ main iteration ============
