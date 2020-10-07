@@ -82,7 +82,7 @@ class DefenderNode(PlayerNode):
 		dx = xw - self.state.x
 
 		with open(self.datadir+'/Itarg.csv', 'a') as f:
-			f.write('%.4f,%s,%.4f,%s\n'%(self.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
+			f.write('%.4f,%s,%.4f,%s\n'%(self.state.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
 
 		return self.vmax*dx/norm(dx)
 
