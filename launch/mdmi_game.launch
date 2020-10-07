@@ -4,8 +4,8 @@
   <!-- <arg name="param_file" default="$(find mdmi_game)/param/game_param.yaml"/>    -->
   <!-- <arg command="load" file="$(find mdmi_game)/param/game_param.yaml"/> -->
   <arg name="r" value="0.3"/>
-  <arg name="ni" value="3"/>
-  <arg name="nd" value="2"/>
+  <arg name="ni" value="7"/>
+  <arg name="nd" value="3"/>
   <arg name="vi" value=".15"/>
   <arg name="vd" value=".25"/>
   <arg name="Rt" value="5."/>
@@ -21,17 +21,17 @@
   <arg name="xi_2" value="0."/>
   <arg name="yi_2" value="3."/>
 
-  <!-- <arg name="xi_3" value="0."/>
-  <arg name="yi_3" value="4."/> -->
+  <arg name="xi_3" value="0."/>
+  <arg name="yi_3" value="4."/>
 
-  <!-- <arg name="xi_4" value="1."/>
-  <arg name="yi_4" value="1."/> -->
+  <arg name="xi_4" value="1."/>
+  <arg name="yi_4" value="1."/>
 
-  <!-- <arg name="xi_5" value="1."/>
-  <arg name="yi_5" value="2."/> -->
+  <arg name="xi_5" value="1."/>
+  <arg name="yi_5" value="2."/>
 
-<!--   <arg name="xi_6" value="1."/>
-  <arg name="yi_6" value="5."/> -->
+  <arg name="xi_6" value="1."/>
+  <arg name="yi_6" value="5."/>
 
   <!-- initial locations defenders -->
   <arg name="xd_0" value="3."/>
@@ -40,11 +40,11 @@
   <arg name="xd_1" value="3."/>
   <arg name="yd_1" value="5."/>
 
-  <!-- <arg name="xd_2" value="3.5"/>
-  <arg name="yd_2" value="2.5"/> -->
+  <arg name="xd_2" value="3.5"/>
+  <arg name="yd_2" value="2.5"/>
 
   <!-- data saving-->
-  <arg name="res_id" default="0"/>
+  <arg name="res_id" default="1"/>
   <arg name="user_account" default="flora" />
   <arg name="csvFilesStoring" default="true" />
   <arg name="csvFilesStoringTime" default="0.1" />
@@ -126,7 +126,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I3 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="3"/>
@@ -145,10 +145,10 @@
     <arg name="user_account" value="$(arg user_account)" />
     <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
-  </include> -->
+  </include>
 
   <!-- ############# launch individual players: intruder I4 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="4"/>
@@ -167,10 +167,10 @@
     <arg name="user_account" value="$(arg user_account)" />
     <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
-  </include> -->
+  </include>
 
   <!-- ############# launch individual players: intruder I5 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="5"/>
@@ -189,10 +189,10 @@
     <arg name="user_account" value="$(arg user_account)" />
     <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
-  </include> -->
+  </include>
 
   <!-- ############# launch individual players: intruder I6 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="6"/>
@@ -211,7 +211,7 @@
     <arg name="user_account" value="$(arg user_account)" />
     <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
-  </include> -->
+  </include>
 
   <!-- ############# launch individual players: intruder D0 ###########-->  
   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
@@ -258,7 +258,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder D2 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="D"/>
     <arg name="id" value="2"/>    
@@ -277,7 +277,7 @@
     <arg name="user_account" value="$(arg user_account)" />
     <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
-  </include> -->
+  </include>
 
   <!-- environment -->
   <node name="environment" pkg="mdmi_game" type="env.py" output="screen">

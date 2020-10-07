@@ -32,7 +32,7 @@ class IntruderNode(PlayerNode):
 				self.status[0] = 'land'
 				rospy.loginfo(str(self)+' reports: captured')
 				with open(self.datadir+'/Dcap.csv', 'a') as f:
-					f.write('%.4f,%s\n'%(self.t, D))
+					f.write('%.4f,%s\n'%(self.state.t, D))
 				break
 
 	def entering_handler(self):
@@ -41,7 +41,7 @@ class IntruderNode(PlayerNode):
 			self.status[0] = 'standby'
 			rospy.loginfo(str(self)+' reports: entered the target')
 			with open(self.datadir+'/Tent.csv', 'a') as f:
-				f.write('%.4f,%d\n'%(self.t, 1))	
+				f.write('%.4f,%d\n'%(self.state.t, 1))	
 
 	def strategy(self):
 
