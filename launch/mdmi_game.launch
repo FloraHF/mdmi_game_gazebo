@@ -44,7 +44,7 @@
   <arg name="yd_2" value="2.5"/>
 
   <!-- data saving-->
-  <arg name="res_id" default="1"/>
+  <arg name="res_id" default="10"/>
   <arg name="user_account" default="flora" />
   <arg name="csvFilesStoring" default="true" />
   <arg name="csvFilesStoringTime" default="0.1" />
