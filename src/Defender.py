@@ -36,7 +36,7 @@ class DefenderNode(PlayerNode):
 		return ['I'+str(i) for i in range(self.ni)]
 	
 	def get_efficiency(self, xi, vd, vi):
-		dr = DominantRegion(self.r, vd/vi, xi, [self.state.x], offset=0)
+		dr = DominantRegion([self.r], vi, [vd], xi, [self.state.x], offset=0)
 		xw = self.target.deepest_point_in_dr(dr)
 		tlevel = self.target.level(xw)
 		dlevel = dist(xw, self.state.x)
@@ -77,12 +77,12 @@ class DefenderNode(PlayerNode):
 
 		istate = self.state_oppo_neigh[icurr]
 
-		dr = DominantRegion(self.r, .5/.3, istate.x, [self.state.x], offset=0)
+		dr = DominantRegion([self.r], istate.speed, [self.vmax], istate.x, [self.state.x], offset=0)
 		xw = self.target.deepest_point_in_dr(dr)
 		dx = xw - self.state.x
 
 		with open(self.datadir+'/Itarg.csv', 'a') as f:
-			f.write('%.4f,%s,%.4f,%s\n'%(self.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
+			f.write('%.4f,%s,%.4f,%s\n'%(self.state.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
 
 		return self.vmax*dx/norm(dx)
 
@@ -91,7 +91,7 @@ class DefenderNode(PlayerNode):
 		# copy to lower the chance of chaning size
 		state_oppo_neigh_temp = {k:v for k, v in self.state_oppo_neigh.items()}
 
-		cand_dict = {p: self.get_efficiency(state.x, .5, .3)\
+		cand_dict = {p: self.get_efficiency(state.x, self.vmax, state.speed)\
 						for p, state in state_oppo_neigh_temp.items()}
 		cand_sort = dllist([[k, v] for k, v in sorted(cand_dict.items(), key=lambda x: x[1])])
 		pin = 0 if cand_sort.size <= self.ub else int(-self.ub)

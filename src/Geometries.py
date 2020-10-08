@@ -4,9 +4,10 @@ from utils import norm, dist
 from scipy.optimize import NonlinearConstraint, minimize
 
 class DominantRegion(object):
-	def __init__(self, r, a, xi, xds, offset=0):
-		self.r = r
-		self.a = a
+	def __init__(self, rs, vi, vds, xi, xds, offset=0):
+		self.rs = rs
+		self.vi = vi
+		self.vds = vds
 		self.xi = xi
 		self.xds = xds
 		self.offset = offset
@@ -26,12 +27,20 @@ class DominantRegion(object):
 
 	def level(self, x):
 		# offset: the distance the defender travels
-		for i, xd in enumerate(self.xds):
+		for i, (vd, xd, r) in enumerate(zip(self.vds, self.xds, self.rs)):
 			if i == 0:
-				inDR = self.a*dist(x, self.xi) - self.offset - (dist(x, xd) - self.r)
+				inDR = (vd/self.vi)*dist(x, self.xi) - self.offset - (dist(x, xd) - r)
 			else:
-				inDR = max(inDR, self.a*dist(x, self.xi) - self.offset - (dist(x, xd) - self.r))
-		return inDR					
+				inDR = max(inDR, (vd/self.vi)*dist(x, self.xi) - self.offset - (dist(x, xd) - r))
+		return inDR	
+	
+	def intersect(self, dr):
+		for vd in dr.vds:
+			self.vds.append(vd)
+		for xd in dr.xds:
+			self.xds.append(xd)
+		for r in dr.rs:
+			self.rs.append(r)
 
 class LineTarget(object):
 	"""docstring for LineTarget"""
