@@ -10,6 +10,7 @@
   <arg name="vd" value=".25"/>
   <arg name="Rt" value="5."/>
   <arg name="Ro" value="5."/>
+  <arg name="iselect_mode" value="value"/>
 
   <!-- initial locations intruders -->
   <arg name="xi_0" value="0."/>
@@ -44,7 +45,7 @@
   <arg name="yd_2" value="2.5"/>
 
   <!-- data saving-->
-  <arg name="res_id" default="10"/>
+  <arg name="res_id" default="3"/>
   <arg name="user_account" default="flora" />
   <arg name="csvFilesStoring" default="true" />
   <arg name="csvFilesStoringTime" default="0.1" />
@@ -224,6 +225,7 @@
     <arg name="Ro" value="$(arg Ro)" />
     <arg name="x" value="$(arg xd_0)"  />
     <arg name="y" value="$(arg yd_0)"  />
+    <arg name="iselect_mode" value="$(arg iselect_mode)"/>
     <!-- environment settings, same for all players-->
     <arg name="r" value="$(arg r)"/>
     <arg name="ni" value="$(arg ni)"  />
@@ -246,6 +248,7 @@
     <arg name="Ro" value="$(arg Ro)" />
     <arg name="x" value="$(arg xd_1)"  />
     <arg name="y" value="$(arg yd_1)"  />
+    <arg name="iselect_mode" value="$(arg iselect_mode)"/>
     <!-- environment settings, same for all players-->
     <arg name="r" value="$(arg r)"/>
     <arg name="ni" value="$(arg ni)"  />
@@ -268,6 +271,7 @@
     <arg name="Ro" value="$(arg Ro)" />
     <arg name="x" value="$(arg xd_2)"  />
     <arg name="y" value="$(arg yd_2)"  />
+    <arg name="iselect_mode" value="$(arg iselect_mode)"/>
     
     <arg name="r" value="$(arg r)"/>
     <arg name="ni" value="$(arg ni)"  />

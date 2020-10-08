@@ -13,9 +13,11 @@ from utils import dist, norm
 
 class DefenderNode(PlayerNode):
 	"""docstring for Intruder"""
-	def __init__(self, *arg, **kwarg):
+	def __init__(self, *arg, iselect_mode='value', **kwarg):
 		super(DefenderNode, self).__init__(*arg, **kwarg)
 		self.ub = np.ceil(self.ni/self.nd)
+		self.iselect_mode = iselect_mode
+		self.iprev = None
 		self.caplist = []
 
 		# for preferred intruder list
@@ -29,6 +31,9 @@ class DefenderNode(PlayerNode):
 		# log: the targeted intruder
 		with open(self.datadir+'/Itarg.csv', 'w') as f:
 			f.write('t,i,e,pref\n')
+
+		with open(self.datadir + '/param.csv', 'a') as f:
+			f.write('iselect_mode,%s\n'%str(self.iselect_mode))
 
 	def get_team(self):
 		return ['D'+str(i) for i in range(self.nd) if i != self.id]
@@ -99,7 +104,8 @@ class DefenderNode(PlayerNode):
 
 		return min([self.target.level(xw) for xw in xis])
 
-	def strategy(self):
+	def strategy(self, iselect_mode='emin'):
+		# iselect_mode = value, emin, emax
 
 		# copy this to prevent being empty again after the following if statement
 		# pref_dict = {k: v for k, v in self.state.pref.items()} 
@@ -113,16 +119,27 @@ class DefenderNode(PlayerNode):
 
 		
 		# select the current intruder by value
-		orders = [order for order in itertools.permutations(pref_dict)]
-		values = [self.value_order(pref_dict, order) for order in orders]
-		icurr = orders[values.index(max(values))][0]
+		if self.iselect_mode == 'value':
+			orders = [order for order in itertools.permutations(pref_dict)]
+			values = [self.value_order(pref_dict, order) for order in orders]
+			icurr = orders[values.index(max(values))][0]
 
-		# select the current intruder by efficiency
-		# icurr = [p for p in pref_dict][0]
-		# icurr = next(iter(pref_dict.items()))[0]
+		elif self.iselect_mode == 'emin':
+			if self.iprev not in pref_dict: # include self.iprev == None
+				icurr = [p for p in pref_dict][-1]
+				self.iprev = icurr
+			else:
+				icurr = self.iprev
+
+		elif self.iselect_mode == 'emax':
+			if self.iprev not in pref_dict: # include self.iprev == None
+				icurr = [p for p in pref_dict][0]
+				self.iprev = icurr
+			else:
+				icurr = self.iprev
 
 		# self.state_oppo_neigh could be changed by other threads
-		# likely when icurr captured by other defenders)
+		# likely when icurr captured by other defenders
 		if icurr not in self.state_oppo_neigh:
 			return np.array([0, 0]) # TODO: return to x0
 
@@ -199,23 +216,28 @@ class DefenderNode(PlayerNode):
 if __name__ == '__main__':
 
 	rospy.init_node('defender', anonymous=True)
-	resid = rospy.get_param("~res_id", 'res0')
+
 	i = rospy.get_param("~id", 0)
+	resid = rospy.get_param("~res_id", 'res0')
+
 	vmax = rospy.get_param("~vmax", .5)
 	x = rospy.get_param("~x", 0)
 	y = rospy.get_param("~y", 0)
+
 	r = rospy.get_param("~r", .1)
 	nd = rospy.get_param("~nd", 2)
 	ni = rospy.get_param("~ni", 1)
 	Ro = rospy.get_param("~Ro", 2.)
 	Rt = rospy.get_param("~Rt", 5.)
 
+	iselect_mode = rospy.get_param("~iselect_mode", 'value')
 	# print('D'+i, x, y)
 
 	defender = DefenderNode(i, np.array([x, y]), vmax,
 							r=r, nd=nd, ni=ni,
 							Rteam=Rt, Roppo=Ro,
-							resid=resid)
+							resid=resid,
+							iselect_mode=iselect_mode)
 
 	rospy.Timer(rospy.Duration(.1), defender.iteration)
 

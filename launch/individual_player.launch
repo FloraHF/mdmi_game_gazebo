@@ -19,6 +19,9 @@
   <arg name="x" default="0.0"  />
   <arg name="y" default="0.0"  />
 
+  <!-- player settings, for defenders only -->
+  <arg name="iselect_mode" default="value"/>
+
   <!-- CrazyS package required settings -->
   <arg name="world_name" default="basic"/>
   <arg name="enable_logging" default="false" />
@@ -48,6 +51,7 @@
       <param name="y" value="$(arg y)"  />
       <param name="Rt" value="$(arg Rt)" />
       <param name="Ro" value="$(arg Ro)" />    
+      <param name="iselect_mode" value="$(arg iselect_mode)"/>
     </node>
 
     <!-- crazyflie model -->
