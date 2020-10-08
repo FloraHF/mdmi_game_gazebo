@@ -2,6 +2,7 @@
 
 import numpy as np
 from pyllist import dllist
+import itertools
 
 import rospy
 from std_msgs.msg import String
@@ -49,26 +50,76 @@ class DefenderNode(PlayerNode):
 		for i in temp_state_oppo_neigh:
 			if self.is_capture(i):
 				self.caplist.append(i)
-				rospy.loginfo(str(self)+' reports: '+i+' is captured')
+				rospy.loginfo_once(str(self)+' reports: '+i+' is captured')
 			else:
 				clear_neib = False
 
 		if clear_neib:
-			rospy.loginfo(str(self)+' reports: not seeing any intruders')
+			rospy.loginfo_once(str(self)+' reports: not seeing any intruders')
 			self.status[0] = 'standby'
 
 	def entering_handler(self):
 		pass	
 
+	def value_order(self, iset, iorder):
+		
+		def recurse(xis, vis, actives, xd):
+			if sum(actives) == 0:
+				return xis, vis, actives, xd
+
+			for i in range(len(xis)):
+				if actives[i]:
+					dr = DominantRegion([self.r], vis[i], [self.vmax], xis[i], [xd], offset=0)
+					xw = self.target.deepest_point_in_dr(dr)
+					dt = dist(xw, xis[i])/vis[i]
+					xd = xd + dt*self.vmax*(xw - xd)/dist(xw, xd)
+					# xis[i] = np.array([x for x in xw])
+					xis[i] = xw
+					actives[i] = 0
+					break
+			for j in range(i+1,len(xis)):
+				if actives[j]:
+					dr = DominantRegion([self.r], vis[j], [self.vmax], xis[j], [xd], offset=self.vmax*dt)
+					xw = self.target.deepest_point_in_dr(dr)
+					e = (xw - xis[j])/dist(xw, xis[j])
+					xi = xis[j] + e*vis[j]*dt
+					# xis[j] = np.array([x for x in xi])
+					xis[j] = xi
+			return recurse(xis, vis, actives, xd)
+
+		xis, vis, actives = [], [], []
+		for i in iorder:
+			xis.append(np.array([x for x in iset[i]['s'].x]))
+			vis.append(iset[i]['s'].speed)
+			actives.append(True)
+
+		xd = np.array([x for x in self.state.x])
+
+		xis, _, _, _ = recurse(xis, vis, actives, xd)
+
+		return min([self.target.level(xw) for xw in xis])
+
 	def strategy(self):
 
 		# copy this to prevent being empty again after the following if statement
-		pref_dict = {k: v for k, v in self.state.pref.items()} 
+		# pref_dict = {k: v for k, v in self.state.pref.items()} 
+		pref_dict = dict()
+		for p in self.state.pref:
+			if p in self.state_oppo_neigh:
+				pref_dict.update({p:{'s':self.state_oppo_neigh[p], 'e':self.state.pref[p]}})
+
 		if not pref_dict:
 			return np.array([0, 0]) # TODO: return to x0
 
-		# TODO: select current intruder by value
-		icurr = next(iter(pref_dict.items()))[0]
+		
+		# select the current intruder by value
+		orders = [order for order in itertools.permutations(pref_dict)]
+		values = [self.value_order(pref_dict, order) for order in orders]
+		icurr = orders[values.index(max(values))][0]
+
+		# select the current intruder by efficiency
+		# icurr = [p for p in pref_dict][0]
+		# icurr = next(iter(pref_dict.items()))[0]
 
 		# self.state_oppo_neigh could be changed by other threads
 		# likely when icurr captured by other defenders)
@@ -82,7 +133,9 @@ class DefenderNode(PlayerNode):
 		dx = xw - self.state.x
 
 		with open(self.datadir+'/Itarg.csv', 'a') as f:
-			f.write('%.4f,%s,%.4f,%s\n'%(self.state.t, icurr, pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
+			f.write('%.4f,%s,%.4f,%s\n'%(self.state.t, icurr, pref_dict[icurr]['e'], 
+										'_'.join(list(map(str, [p + '=%.6f'%d['e'] for p, d in pref_dict.items()])))))
+			# f.write('%.4f,%s,%.4f,%s\n'%(self.state.t, icurr, self.state.pref_dict[icurr], self.prefdict_to_prefstring(pref_dict)))
 
 		return self.vmax*dx/norm(dx)
 
@@ -116,7 +169,7 @@ class DefenderNode(PlayerNode):
 		pref_dict = {p: cand_dict[p] for p in pref[::-1]}
 		self.state.pref = pref_dict
 
-		self.pref_pub.publish(self.prefdict_to_prefstring(pref_dict))
+		self.pref_pub.publish('_'.join(list(map(str, [p + '=%.6f'%e for p, e in pref_dict.items()]))))
 					
 	def get_prefsub_callback(self, p):
 		def sub_callback(msg):
@@ -136,9 +189,9 @@ class DefenderNode(PlayerNode):
 				pref.update({p:e})
 		return pref
 
-	def prefdict_to_prefstring(self, pref):
-		datalist = [p + '=%.6f'%e for p, e in pref.items()] 
-		return '_'.join(list(map(str, datalist)))
+	# def prefdict_to_prefstring(self, pref):
+	# 	datalist = [p + '=%.6f'%e for p, e in pref.items()] 
+	# 	return '_'.join(list(map(str, datalist)))
 
 	def __repr__(self):
 		return 'D' + str(self.id)
