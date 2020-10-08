@@ -32,7 +32,7 @@ class IntruderNode(PlayerNode):
 				self.status[0] = 'land'
 				rospy.loginfo(str(self)+' reports: captured')
 				with open(self.datadir+'/Dcap.csv', 'a') as f:
-					f.write('%.4f,%s\n'%(self.t, D))
+					f.write('%.4f,%s\n'%(self.state.t, D))
 				break
 
 	def entering_handler(self):
@@ -41,28 +41,27 @@ class IntruderNode(PlayerNode):
 			self.status[0] = 'standby'
 			rospy.loginfo(str(self)+' reports: entered the target')
 			with open(self.datadir+'/Tent.csv', 'a') as f:
-				f.write('%.4f,%d\n'%(self.t, 1))	
+				f.write('%.4f,%d\n'%(self.state.t, 1))	
 
 	def strategy(self):
 
 		# copy to prevent change during iteration
 		oppo_dict = {k: v for k, v in self.state_oppo_neigh.items()}
 
-		xds, vs = [], []
+		xds, vds = [], []
 		for d, state in oppo_dict.items():
 			xds.append(np.array([x for x in state.x]))
-			vs.append(state.speed)
-		vd = np.average(vs)
+			vds.append(state.speed)
 		# print(str(self), vs, vd)
 
 		if xds: # TODO: to add velocity estimation
 			# dr = DominantRegion(self.env.target.size, vd/norm(self.state.v), self.state.x, xds, offset=0)
-			dr = DominantRegion(self.r, .5/.3, self.state.x, xds, offset=0)
+			dr = DominantRegion([self.r]*len(xds), self.vmax, vds, self.state.x, xds, offset=0)
 			xw = self.target.deepest_point_in_dr(dr)
 			dx = xw - self.state.x
 			dist = norm(dx)
 			if dist > 1e-6:
-				return 0.15*dx/dist
+				return self.vmax*dx/dist
 
 		return np.zeros(2)
 
