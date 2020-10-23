@@ -15,6 +15,9 @@ from trajectory_msgs.msg import MultiDOFJointTrajectory
 # services
 from mdmi_game.srv import DroneStatus, DroneStatusResponse
 
+# collision avoidance: orca
+from pyorca.pyorca import Agent, orca
+
 # for the game
 from Geometries import CircleTarget
 from utils import norm, dist, PlayerState
@@ -125,8 +128,17 @@ class PlayerNode(object):
 		self.trajectory_msg_pub.publish(trajectory_msg)
 
 	def play(self):
-		u = self.strategy()
-		# print('strategy of ', str(self), u)
+		u_pref = self.strategy()
+		orca_self = Agent(self.state.x, self.state.v, .1, u_pref)
+		orca_other = []
+
+		for other, state in self.state_team_neigh.items():
+			orca_other.append(Agent(state.x, state.v, .1, (0, 0)))
+
+		u, _ = orca(orca_self, orca_other, 2., 1e-2)
+		
+		# print(str(self), u_pref, u)
+
 		trajectory_msg = create_multi_dof_joint_trajectory_msg(1)
 
 		trajectory_msg.points[0].velocities[0].linear.x = u[0]

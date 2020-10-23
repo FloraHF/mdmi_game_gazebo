@@ -30,7 +30,7 @@ import random
 
 N_AGENTS = 8
 RADIUS = 8.
-SPEED = 10
+SPEED = .25
 
 agents = []
 for i in range(N_AGENTS):
@@ -73,6 +73,7 @@ def draw_orca_circles(a, b):
         pygame.draw.circle(screen, pygame.Color(0, 0, 255), rint((-(a.position - b.position) / x + a.position) * scale + O).astype(int), int(round((a.radius + b.radius) * scale / x)), 1)
 
 def draw_velocity(a):
+    # print(a.velocity)
     pygame.draw.line(screen, pygame.Color(0, 255, 255), rint(a.position * scale + O).astype(int), rint((a.position + a.velocity) * scale + O).astype(int), 1)
     # pygame.draw.line(screen, pygame.Color(255, 0, 255), rint(a.position * scale + O).astype(int), rint((a.position + a.pref_velocity) * scale + O).astype(int), 1)
 

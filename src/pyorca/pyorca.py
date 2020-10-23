@@ -27,7 +27,7 @@ import numpy
 from numpy import array, sqrt, copysign, dot
 from numpy.linalg import det
 
-from halfplaneintersect import halfplane_optimize, Line, perp
+from pyorca.halfplaneintersect import halfplane_optimize, Line, perp
 
 # Method:
 # For each robot A and potentially colliding robot B, compute smallest change
@@ -38,7 +38,7 @@ from halfplaneintersect import halfplane_optimize, Line, perp
 
 class Agent(object):
     """A disk-shaped agent."""
-    def __init__(self, position, velocity, radius, max_speed, pref_velocity):
+    def __init__(self, position, velocity, radius, pref_velocity):
         super(Agent, self).__init__()
         self.position = array(position)
         self.velocity = array(velocity)
