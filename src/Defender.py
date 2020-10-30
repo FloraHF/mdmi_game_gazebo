@@ -61,7 +61,7 @@ class DefenderNode(PlayerNode):
 
 		if clear_neib:
 			rospy.loginfo_once(str(self)+' reports: not seeing any intruders')
-			self.status[0] = 'standby'
+			# self.status[0] = 'standby'
 
 	def entering_handler(self):
 		pass	
