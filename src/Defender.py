@@ -116,27 +116,30 @@ class DefenderNode(PlayerNode):
 
 		if not pref_dict:
 			return np.array([0, 0]) # TODO: return to x0
+		n_pref = len(pref_dict)
 
 		
 		# select the current intruder by value
-		if self.iselect_mode == 'value':
+		# if self.iselect_mode == 'value':
+		if n_pref < 4: # value
 			orders = [order for order in itertools.permutations(pref_dict)]
 			values = [self.value_order(pref_dict, order) for order in orders]
 			icurr = orders[values.index(max(values))][0]
 
-		elif self.iselect_mode == 'emin':
+		# elif self.iselect_mode == 'emin':
+		else: # emin
 			if self.iprev not in pref_dict: # include self.iprev == None
 				icurr = [p for p in pref_dict][-1]
 				self.iprev = icurr
 			else:
 				icurr = self.iprev
 
-		elif self.iselect_mode == 'emax':
-			if self.iprev not in pref_dict: # include self.iprev == None
-				icurr = [p for p in pref_dict][0]
-				self.iprev = icurr
-			else:
-				icurr = self.iprev
+		# elif self.iselect_mode == 'emax':
+		# 	if self.iprev not in pref_dict: # include self.iprev == None
+		# 		icurr = [p for p in pref_dict][0]
+		# 		self.iprev = icurr
+		# 	else:
+		# 		icurr = self.iprev
 
 		# self.state_oppo_neigh could be changed by other threads
 		# likely when icurr captured by other defenders

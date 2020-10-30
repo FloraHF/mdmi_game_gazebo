@@ -127,6 +127,12 @@ class PlayerNode(object):
 
 		self.trajectory_msg_pub.publish(trajectory_msg)
 
+	def win(self):
+		trajectory_msg = create_multi_dof_joint_trajectory_msg(1)
+		trajectory_msg.points[0].transforms[0].translation.z = self.altitude+.3
+
+		self.trajectory_msg_pub.publish(trajectory_msg)
+
 	def play(self):
 		u_pref = self.strategy()
 		orca_self = Agent(self.state.x, self.state.v, .1, u_pref)
@@ -200,6 +206,9 @@ class PlayerNode(object):
 
 			if self.status[0] == 'standby':
 				self.standby()
+
+			if self.status[0] == 'win':
+				self.win()
 
 			if self.status[0] == 'deploy':
 				self.deploy()

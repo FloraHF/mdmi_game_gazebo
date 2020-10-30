@@ -38,7 +38,7 @@ class IntruderNode(PlayerNode):
 	def entering_handler(self):
 		if self.target.level(self.state.x) < -0.01:
 			self.status[1] = 'entered'
-			self.status[0] = 'standby'
+			self.status[0] = 'win'
 			rospy.loginfo(str(self)+' reports: entered the target')
 			with open(self.datadir+'/Tent.csv', 'a') as f:
 				f.write('%.4f,%d\n'%(self.state.t, 1))	
@@ -63,7 +63,8 @@ class IntruderNode(PlayerNode):
 			if dist > 1e-6:
 				return self.vmax*dx/dist
 
-		return np.zeros(2)
+		dx = np.array([self.target.x0, self.target.y0]) - self.state.x
+		return vmax*dx/norm(dx)
 
 	def __repr__(self):
 		return 'I' + str(self.id)

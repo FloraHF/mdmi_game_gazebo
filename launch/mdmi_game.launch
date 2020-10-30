@@ -6,46 +6,61 @@
   <arg name="r" value="0.3"/>
   <arg name="ni" value="7"/>
   <arg name="nd" value="3"/>
-  <arg name="vi" value=".15"/>
+  <arg name="vi" value=".2"/>
   <arg name="vd" value=".25"/>
-  <arg name="Rt" value="5."/>
-  <arg name="Ro" value="5."/>
+  <arg name="Rt" value="2."/>
+  <arg name="Ro" value="2."/>
   <arg name="iselect_mode" value="value"/>
 
   <!-- initial locations intruders -->
-  <arg name="xi_0" value="0."/>
-  <arg name="yi_0" value="0."/>
+<!--   <arg name="xi_0" value="1.25"/>
+  <arg name="yi_0" value="1."/> -->
 
-  <arg name="xi_1" value="0."/>
-  <arg name="yi_1" value="2."/>
+  <arg name="xi_1" value="2.25"/>
+  <arg name="yi_1" value="1.5"/>
 
-  <arg name="xi_2" value="0."/>
-  <arg name="yi_2" value="3."/>
+  <arg name="xi_2" value="1.9"/>
+  <arg name="yi_2" value="2.95"/>
 
-  <arg name="xi_3" value="0."/>
-  <arg name="yi_3" value="4."/>
+  <arg name="xi_3" value="1.2"/>
+  <arg name="yi_3" value="3."/>
 
-  <arg name="xi_4" value="1."/>
-  <arg name="yi_4" value="1."/>
+  <arg name="xi_4" value="0.7"/>
+  <arg name="yi_4" value="4.9"/>
 
-  <arg name="xi_5" value="1."/>
-  <arg name="yi_5" value="2."/>
+  <arg name="xi_5" value="1.7"/>
+  <arg name="yi_5" value="1.3"/>
 
-  <arg name="xi_6" value="1."/>
+  <arg name="xi_6" value="2.2"/>
   <arg name="yi_6" value="5."/>
 
-  <!-- initial locations defenders -->
-  <arg name="xd_0" value="3."/>
-  <arg name="yd_0" value="0."/>
+<!--   <arg name="xi_7" value="0.5"/>
+  <arg name="yi_7" value="4."/> -->
 
-  <arg name="xd_1" value="3."/>
-  <arg name="yd_1" value="5."/>
+  <!-- <arg name="xi_8" value="2."/>
+  <arg name="yi_8" value="5."/> -->
+
+  <!-- <arg name="xi_9" value="2."/>
+  <arg name="yi_9" value="5.5"/> -->
+
+  <arg name="xi_0" value="2.5"/>
+  <arg name="yi_0" value="4.2"/>
+
+  <!-- <arg name="xi_11" value="3."/>
+  <arg name="yi_11" value="5.5"/> -->
+
+  <!-- initial locations defenders -->
+  <arg name="xd_0" value="3.5"/>
+  <arg name="yd_0" value="1."/>
+
+  <arg name="xd_1" value="4."/>
+  <arg name="yd_1" value="4."/>
 
   <arg name="xd_2" value="3.5"/>
   <arg name="yd_2" value="2.5"/>
 
   <!-- data saving-->
-  <arg name="res_id" default="3"/>
+  <arg name="res_id" default="_00_05_$(arg iselect_mode)"/>
   <arg name="user_account" default="flora" />
   <arg name="csvFilesStoring" default="true" />
   <arg name="csvFilesStoringTime" default="0.1" />
@@ -214,7 +229,117 @@
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
   </include>
 
-  <!-- ############# launch individual players: intruder D0 ###########-->  
+  <!-- ############# launch individual players: intruder I7 ###########-->  
+<!--   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    
+    <arg name="role" value="I"/>
+    <arg name="id" value="7"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="vmax" value="$(arg vi)" />
+    <arg name="Rt" value="$(arg Rt)" />
+    <arg name="Ro" value="$(arg Ro)" />
+    <arg name="x" value="$(arg xi_7)"  />
+    <arg name="y" value="$(arg yi_7)"  />
+    
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    
+    <arg name="res_id" value="$(arg res_id)"/> 
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include> -->
+
+  <!-- ############# launch individual players: intruder I8 ###########-->  
+  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    
+    <arg name="role" value="I"/>
+    <arg name="id" value="8"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="vmax" value="$(arg vi)" />
+    <arg name="Rt" value="$(arg Rt)" />
+    <arg name="Ro" value="$(arg Ro)" />
+    <arg name="x" value="$(arg xi_8)"  />
+    <arg name="y" value="$(arg yi_8)"  />
+    
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    
+    <arg name="res_id" value="$(arg res_id)"/> 
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include> -->
+
+  <!-- ############# launch individual players: intruder I9 ###########-->  
+  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    
+    <arg name="role" value="I"/>
+    <arg name="id" value="9"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="vmax" value="$(arg vi)" />
+    <arg name="Rt" value="$(arg Rt)" />
+    <arg name="Ro" value="$(arg Ro)" />
+    <arg name="x" value="$(arg xi_9)"  />
+    <arg name="y" value="$(arg yi_9)"  />
+    
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    
+    <arg name="res_id" value="$(arg res_id)"/> 
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include> -->
+
+  <!-- ############# launch individual players: intruder I10 ###########-->  
+  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    
+    <arg name="role" value="I"/>
+    <arg name="id" value="10"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="vmax" value="$(arg vi)" />
+    <arg name="Rt" value="$(arg Rt)" />
+    <arg name="Ro" value="$(arg Ro)" />
+    <arg name="x" value="$(arg xi_10)"  />
+    <arg name="y" value="$(arg yi_10)"  />
+    
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    
+    <arg name="res_id" value="$(arg res_id)"/> 
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include> -->
+
+  <!-- ############# launch individual players: intruder I11 ###########-->  
+  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+    
+    <arg name="role" value="I"/>
+    <arg name="id" value="11"/>
+    <arg name="node_file" value="Intruder.py"/>
+    <arg name="vmax" value="$(arg vi)" />
+    <arg name="Rt" value="$(arg Rt)" />
+    <arg name="Ro" value="$(arg Ro)" />
+    <arg name="x" value="$(arg xi_11)"  />
+    <arg name="y" value="$(arg yi_11)"  />
+    
+    <arg name="r" value="$(arg r)"/>
+    <arg name="ni" value="$(arg ni)"  />
+    <arg name="nd" value="$(arg nd)"  />  
+    
+    <arg name="res_id" value="$(arg res_id)"/> 
+    <arg name="user_account" value="$(arg user_account)" />
+    <arg name="csvFilesStoring" value="$(arg csvFilesStoring)" />
+    <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
+  </include>  --> 
+
+  <!-- ############# launch individual players: D0 ###########-->  
   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="D"/>
@@ -237,7 +362,7 @@
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
   </include>
 
-  <!-- ############# launch individual players: intruder D1 ###########-->  
+  <!-- ############# launch individual players: D1 ###########-->  
   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="D"/>
@@ -260,7 +385,7 @@
     <arg name="csvFilesStoringTime" value="$(arg csvFilesStoringTime)" />
   </include>
 
-  <!-- ############# launch individual players: intruder D2 ###########-->  
+  <!-- ############# launch individual players: D2 ###########-->  
   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
     
     <arg name="role" value="D"/>
