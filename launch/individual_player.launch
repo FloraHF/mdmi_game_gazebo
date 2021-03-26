@@ -8,7 +8,7 @@
   <arg name="nd" default="$(arg nd)"  />   
 
   <!-- player settings -->
-  <!-- <arg name="param_file" default="$(find mdmi_game)/param/defender.yaml"/>    -->
+  <!-- <arg name="param_file" default="$(find mdmifd_gazebo)/param/defender.yaml"/>    -->
   <!-- <rosparam command="load" file="$(arg param_file)"/> -->
   <arg name="role" default="I"/>
   <arg name="node_file" default="Intruder.py"/>
@@ -40,7 +40,7 @@
   <group ns="crazyflie2_$(arg role)$(arg id)">
 
    <!-- player node -->
-    <node name="player" pkg="mdmi_game" type="$(arg node_file)" output="screen">
+    <node name="player" pkg="mdmifd_gazebo" type="$(arg node_file)" output="screen">
       <param name="res_id" value="res$(arg res_id)"  />
       <param name="id" value="$(arg id)"  />
       <param name="ni" value="$(arg ni)"  />

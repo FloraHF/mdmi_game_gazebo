@@ -33,7 +33,7 @@
   <group ns="crazyflie2_I0">
 
    <!-- player node -->
-    <node name="test_player" pkg="mdmi_game" type="TestPlayer.py" output="screen">
+    <node name="test_player" pkg="mdmifd_gazebo" type="TestPlayer.py" output="screen">
       <param name="id" value="I0"  />
       <param name="x" value="1.0"  />
       <param name="y" value="2.0"  />    

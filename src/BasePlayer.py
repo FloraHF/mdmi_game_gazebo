@@ -13,7 +13,7 @@ from std_msgs.msg import String
 from trajectory_msgs.msg import MultiDOFJointTrajectory
 
 # services
-from mdmi_game.srv import DroneStatus, DroneStatusResponse
+from mdmifd_gazebo.srv import DroneStatus, DroneStatusResponse
 
 # collision avoidance: orca
 from pyorca.pyorca import Agent, orca

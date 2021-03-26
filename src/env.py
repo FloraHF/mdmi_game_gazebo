@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from mdmi_game.srv import DroneStatus, DroneStatusResponse
+from mdmifd_gazebo.srv import DroneStatus, DroneStatusResponse
 # from std_srvs.srv import Empty, EmptyResponse
 
 

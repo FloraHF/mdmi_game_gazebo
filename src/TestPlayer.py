@@ -3,7 +3,7 @@
 import numpy as np
 
 import rospy
-from mdmi_game.srv import DroneStatus, DroneStatusResponse
+from mdmifd_gazebo.srv import DroneStatus, DroneStatusResponse
 from trajectory_msgs.msg import MultiDOFJointTrajectory
 from std_msgs.msg import String
 

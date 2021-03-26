@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
   <!-- game settings-->
-  <!-- <arg name="param_file" default="$(find mdmi_game)/param/game_param.yaml"/>    -->
-  <!-- <arg command="load" file="$(find mdmi_game)/param/game_param.yaml"/> -->
+  <!-- <arg name="param_file" default="$(find mdmifd_gazebo)/param/game_param.yaml"/>    -->
+  <!-- <arg command="load" file="$(find mdmifd_gazebo)/param/game_param.yaml"/> -->
   <arg name="r" value="0.3"/>
   <arg name="ni" value="9"/>
   <arg name="nd" value="3"/>
@@ -76,7 +76,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I0 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="I"/>
     <arg name="id" value="0"/>
@@ -98,7 +98,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I1 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="I"/>
     <arg name="id" value="1"/>
@@ -120,7 +120,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I2 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="I"/>
     <arg name="id" value="2"/>
@@ -142,7 +142,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I3 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="3"/>
@@ -164,7 +164,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I4 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="4"/>
@@ -186,7 +186,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I5 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="5"/>
@@ -208,7 +208,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I6 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="6"/>
@@ -230,7 +230,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I7 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="7"/>
@@ -252,7 +252,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I8 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="8"/>
@@ -274,7 +274,7 @@
   </include>
 
   <!-- ############# launch individual players: intruder I9 ###########-->  
-<!--   <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+<!--   <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="9"/>
@@ -296,7 +296,7 @@
   </include> -->
 
   <!-- ############# launch individual players: intruder I10 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <!-- <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="10"/>
@@ -318,7 +318,7 @@
   </include> -->
 
   <!-- ############# launch individual players: intruder I11 ###########-->  
-  <!-- <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <!-- <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="I"/>
     <arg name="id" value="11"/>
@@ -340,7 +340,7 @@
   </include>  --> 
 
   <!-- ############# launch individual players: D0 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="D"/>
     <arg name="id" value="0"/>
@@ -363,7 +363,7 @@
   </include>
 
   <!-- ############# launch individual players: D1 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     <!-- player settings, change here-->
     <arg name="role" value="D"/>
     <arg name="id" value="1"/>    
@@ -386,7 +386,7 @@
   </include>
 
   <!-- ############# launch individual players: D2 ###########-->  
-  <include file="$(find mdmi_game)/launch/individual_player.launch"> 
+  <include file="$(find mdmifd_gazebo)/launch/individual_player.launch"> 
     
     <arg name="role" value="D"/>
     <arg name="id" value="2"/>    
@@ -409,7 +409,7 @@
   </include>
 
   <!-- environment -->
-  <node name="environment" pkg="mdmi_game" type="env.py" output="screen">
+  <node name="environment" pkg="mdmifd_gazebo" type="env.py" output="screen">
     <param name="ni" value="$(arg ni)"  />
     <param name="nd" value="$(arg nd)"  />  
   </node>   
