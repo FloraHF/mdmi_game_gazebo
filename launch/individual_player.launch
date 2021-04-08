@@ -29,6 +29,7 @@
   <arg name="enable_state_estimator" default="true"/>
   <arg name="enable_mellinger_controller" default="false"/>  
   <arg name="enable_internal_model_controller" default="false"/>
+  <arg name="enable_aideck_camera" default="false"/>
 
   <!-- data saving settings -->
   <arg name="res_id" default="0"/>
@@ -62,6 +63,7 @@
       <arg name="enable_logging" value="$(arg enable_logging)" />
       <arg name="enable_ground_truth" value="$(arg enable_ground_truth)" />
       <arg name="enable_internal_model_controller" value="$(arg enable_internal_model_controller)" />
+      <arg name="enable_aideck_camera" value="$(arg enable_aideck_camera)"/>
       <arg name="log_file" value="$(arg mav_name)_$(arg role)$(arg id)"/>
       <!-- Set the initial position -->
       <arg name="x" value="$(arg x)"/>
