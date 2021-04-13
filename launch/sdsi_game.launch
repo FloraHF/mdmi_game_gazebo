@@ -13,12 +13,12 @@
   <arg name="iselect_mode" value="value"/>
 
   <!-- initial locations intruders -->
-  <arg name="xi_0" value=".2"/>
-  <arg name="yi_0" value="2."/>
+  <arg name="xi_0" value="1"/>
+  <arg name="yi_0" value="0."/>
 
   <!-- initial locations defenders -->
-  <arg name="xd_0" value="4."/>
-  <arg name="yd_0" value="1."/>
+  <arg name="xd_0" value="0."/>
+  <arg name="yd_0" value="0."/>
 
   <!-- data saving-->
   <arg name="res_id" default="_02_02_$(arg iselect_mode)"/>
