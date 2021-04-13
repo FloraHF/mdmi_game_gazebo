@@ -18,6 +18,10 @@
   <arg name="Ro" default="5." />
   <arg name="x" default="0.0"  />
   <arg name="y" default="0.0"  />
+  <arg name="z" default="1.0"  />
+
+  <arg name="takeoff_offset_x" default="0.0"  />
+  <arg name="takeoff_offset_y" default="0.0"  />
 
   <!-- player settings, for defenders only -->
   <arg name="iselect_mode" default="value"/>
@@ -50,6 +54,9 @@
       <param name="vmax" value="$(arg vmax)" />
       <param name="x" value="$(arg x)"  />
       <param name="y" value="$(arg y)"  />
+      <param name="z" value="$(arg z)"  />
+      <param name="takeoff_offset_x" value="$(arg takeoff_offset_x)"/>
+      <param name="takeoff_offset_y" value="$(arg takeoff_offset_y)"/>
       <param name="Rt" value="$(arg Rt)" />
       <param name="Ro" value="$(arg Ro)" />    
       <param name="iselect_mode" value="$(arg iselect_mode)"/>

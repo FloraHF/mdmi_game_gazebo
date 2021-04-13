@@ -13,12 +13,18 @@
   <arg name="iselect_mode" value="value"/>
 
   <!-- initial locations intruders -->
-  <arg name="xi_0" value="1"/>
-  <arg name="yi_0" value="0."/>
+  <arg name="xi_0" value="1."/>
+  <arg name="yi_0" value="0.5"/>
+  <arg name="zi_0" value="1.5"/>
+  <arg name="takeoff_offset_x_i0" value="0."/>
+  <arg name="takeoff_offset_y_i0" value="0."/>
 
   <!-- initial locations defenders -->
   <arg name="xd_0" value="0."/>
   <arg name="yd_0" value="0."/>
+  <arg name="zd_0" value="1."/>
+  <arg name="takeoff_offset_x_d0" value="0.1"/>
+  <arg name="takeoff_offset_y_d0" value="0.3"/>
 
   <!-- data saving-->
   <arg name="res_id" default="_02_02_$(arg iselect_mode)"/>
@@ -47,6 +53,9 @@
     <arg name="Ro" value="$(arg Ro)" />
     <arg name="x" value="$(arg xi_0)"  />
     <arg name="y" value="$(arg yi_0)"  />
+    <arg name="z" value="$(arg zi_0)"  />
+    <arg name="takeoff_offset_x" value="$(arg takeoff_offset_x_i0)"/>
+    <arg name="takeoff_offset_y" value="$(arg takeoff_offset_y_i0)"/>
     <!-- environment settings, same for all players-->
     <arg name="r" value="$(arg r)"/>
     <arg name="ni" value="$(arg ni)"  />
@@ -69,6 +78,10 @@
     <arg name="Ro" value="$(arg Ro)" />
     <arg name="x" value="$(arg xd_0)"  />
     <arg name="y" value="$(arg yd_0)"  />
+    <arg name="z" value="$(arg zd_0)"  />
+    <arg name="takeoff_offset_x" value="$(arg takeoff_offset_x_d0)"/>
+    <arg name="takeoff_offset_y" value="$(arg takeoff_offset_y_d0)"/>
+
     <arg name="iselect_mode" value="$(arg iselect_mode)"/>
     <arg name="enable_aideck_camera" value="true"/>
     <!-- environment settings, same for all players-->

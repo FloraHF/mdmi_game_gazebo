@@ -74,9 +74,15 @@ if __name__ == '__main__':
 	rospy.init_node('intruder', anonymous=True)
 	resid = rospy.get_param("~res_id", 'res0')
 	i = rospy.get_param("~id", 0)
+
 	vmax = rospy.get_param("~vmax", .3)
 	x = rospy.get_param("~x", 0)
 	y = rospy.get_param("~y", 0)
+	z = rospy.get_param("~z", 1.)
+
+	dx = rospy.get_param("~takeoff_offset_x", 0.)
+	dy = rospy.get_param("~takeoff_offset_y", 0.)
+
 	r = rospy.get_param("~r", .1)
 	nd = rospy.get_param("~nd", 2)
 	ni = rospy.get_param("~ni", 1)
@@ -84,6 +90,7 @@ if __name__ == '__main__':
 	Rt = rospy.get_param("~Rt", 5.)
 		
 	intruder = IntruderNode(i, np.array([x, y]), vmax,
+							z=z, offset=np.array([dx, dy]),
 							r=r, nd=nd, ni=ni,
 							Rteam=Rt, Roppo=Ro,
 							resid=resid)

@@ -26,7 +26,11 @@ from utils import odometry_msg_to_player_state, create_multi_dof_joint_trajector
 
 class PlayerNode(object):
 
-	def __init__(self, i, x, vmax, ni=1, nd=2, r=1., Rtarg=1.25, Rteam=5., Roppo=5., resid='res0'):
+	def __init__(self, i, x, vmax, 
+					z=1., offset=np.array([0., 0.]),
+					ni=1, nd=2, r=1., 
+					Rtarg=1.25, Rteam=5., Roppo=5., 
+					resid='res0'):
 		# environment settings
 		self.target = CircleTarget(Rtarg)
 		self.ni = ni
@@ -34,9 +38,12 @@ class PlayerNode(object):
 		self.t = 0.
 
 		# player settings
-		self.altitude = 1.
-		self.r = r
 		self.id = i
+
+		self.r = r
+		self.altitude = z
+		self.offset = offset
+	
 		self.Rt = Rteam
 		self.Ro = Roppo
 
@@ -44,6 +51,8 @@ class PlayerNode(object):
 		self.x0 = x
 		self.vmax = vmax
 		self.state = PlayerState(self.t, self.x0, self.altitude)
+
+		self.traj = None
 
 		# id of all the players
 		self.team_all = self.get_team()
@@ -158,8 +167,8 @@ class PlayerNode(object):
 	def deploy(self):
 		trajectory_msg = create_multi_dof_joint_trajectory_msg(1)
 
-		trajectory_msg.points[0].transforms[0].translation.x = self.x0[0]
-		trajectory_msg.points[0].transforms[0].translation.y = self.x0[1]
+		trajectory_msg.points[0].transforms[0].translation.x = self.x0[0] + self.offset[0]
+		trajectory_msg.points[0].transforms[0].translation.y = self.x0[1] + self.offset[1]
 		trajectory_msg.points[0].transforms[0].translation.z = self.altitude
 		
 		self.trajectory_msg_pub.publish(trajectory_msg)
@@ -169,12 +178,26 @@ class PlayerNode(object):
 
 		self.trajectory_msg_pub.publish(trajectory_msg)
 
+	def set_waypoint(self):
+		pass
+
+	def visit_waypoint(self):
+		pass
+
+	def set_trajectory(self, traj):
+		if self.traj is None:
+			self.traj = traj
+
+	def follow_trajectory(self):
+		pass
+
+
 	# ============ service callbacks ============
 	def status_srv_callback(self, req):
 		self.status[0] = req.status
 		if req.status in ['play', 'land', 'standby']:
 			controller_status = 'acceleration_altitude'
-		if req.status == 'deploy':
+		if req.status in ['deploy', 'waypoint']:
 			controller_status = 'waypoint'
 		self.controller_status_pub.publish(controller_status)
 		# print('seting status for ', str(self), ' as', self.status)
@@ -215,6 +238,11 @@ class PlayerNode(object):
 
 			if self.status[0] == 'land':
 				self.land()
+
+			if self.status[0] == 'follow':
+				if self.traj is not None:
+					self.follow_trajectory()				
+
 
 	# ============ class functions ============
 	def __repr__(self):

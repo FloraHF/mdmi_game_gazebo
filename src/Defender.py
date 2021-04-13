@@ -226,6 +226,10 @@ if __name__ == '__main__':
 	vmax = rospy.get_param("~vmax", .5)
 	x = rospy.get_param("~x", 0)
 	y = rospy.get_param("~y", 0)
+	z = rospy.get_param("~z", 1.)
+
+	dx = rospy.get_param("~takeoff_offset_x", 0.)
+	dy = rospy.get_param("~takeoff_offset_y", 0.)
 
 	r = rospy.get_param("~r", .1)
 	nd = rospy.get_param("~nd", 2)
@@ -237,6 +241,7 @@ if __name__ == '__main__':
 	# print('D'+i, x, y)
 
 	defender = DefenderNode(i, np.array([x, y]), vmax,
+							z=z, offset=np.array([dx, dy]),
 							r=r, nd=nd, ni=ni,
 							Rteam=Rt, Roppo=Ro,
 							resid=resid,

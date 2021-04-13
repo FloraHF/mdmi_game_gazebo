@@ -12,7 +12,8 @@ from scipy import linalg
 from get_ellipse import mvee, la
 
 
-LL = 0.092 + 0.046*np.sqrt(2)/2
+LL = 0.092*np.sqrt(2)
+# LL = 0.092 + 0.046*np.sqrt(2)/2
 fx = fy = 190.68123344056778
 K = np.array([[fx, 0.0, 160.5], 
 			  [0.0, fy, 160.5], 
